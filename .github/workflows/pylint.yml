@@ -1,0 +1,26 @@
+name: Pylint
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+          environment-file: environment.yml
+          activate-environment: github-api-wrapper
+          python-version: ${{ matrix.python-version }}
+          auto-activate-base: false
+          channels: defaults,conda-forge
+      - name: Bash
+        shell: bash -el {0}
+        run: |
+          conda info
+          conda list
+          pylint $(git ls-files '*.py')
