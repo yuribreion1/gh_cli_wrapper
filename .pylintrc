@@ -1,0 +1,28 @@
+[MASTER]
+
+fail-under=7.0
+ignore=CVS,.git,__pycache__,.venv,venv,env,node_modules,.build
+
+[MESSAGES CONTROL]
+
+disable=
+  R0903, # too-few-public-methods
+  W0613, # Unused argument
+  E0602, # Undefined variable
+
+[REPORTS]
+output-format=colorized
+reports=no
+score=yes
+
+[BASIC]
+
+good-names=i,j,k,ex,Run,_,id,pk
+variable-rgx=[a-z_][a-z0-9_]{2,30}$
+function-rgx=[a-z_][a-z0-9_]{2,30}$
+const-rgx=(([A-Z_][A-Z0-9_]*)|(__.*__))$
+
+[FORMAT]
+max-line-length=120
+max-module-lines=1000
+indent-string='    '

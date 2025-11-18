@@ -1,0 +1,6 @@
+[project]
+name = "github_api_wrapper"
+version = "0.1.1"
+description = "Simplified wrapper of GitHub APIs"
+authors = [ { name = "Breion, Yuri"} ]
+requires-python = ">=3.10"
