@@ -7,6 +7,7 @@ import json
 import requests
 from requests.exceptions import HTTPError
 
+
 class APIClient:
     """
     Class responsible to handle generic HTTP requests
@@ -28,14 +29,10 @@ class APIClient:
 
         headers = {
             "Accept": "application/vnd.github+json",
-            "Authorization": f"Bearer {self.bearer_token}"
+            "Authorization": f"Bearer {self.bearer_token}",
         }
 
-        requests_args = {
-            "url": full_url,
-            "timeout": 5,
-            "headers": headers
-        }
+        requests_args = {"url": full_url, "timeout": 5, "headers": headers}
 
         try:
             response = requests.get(**requests_args)
