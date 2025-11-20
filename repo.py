@@ -3,6 +3,7 @@ Repository related functions
 """
 
 from api_client import APIClient
+from logger import get_logger
 
 
 def repository(base_url, bearer_token, args):
@@ -12,6 +13,7 @@ def repository(base_url, bearer_token, args):
     results = None
 
     client = APIClient(base_url=base_url, bearer_token=bearer_token)
+    logger = get_logger(level=getattr(args, "log_level", "INFO"))
 
     match getattr(args, "action", None):
         case "list":
@@ -22,34 +24,40 @@ def repository(base_url, bearer_token, args):
             tags = getattr(args, "tags", False)
             teams = getattr(args, "teams", False)
             languages = getattr(args, "languages", False)
+            org = getattr(args, "org", None)
+
+            if org:
+                logger.info("Getting all repositories from organization %s", org)
+                results = client.get(f"/orgs/{org}/repos")
 
             if owner and not all_flags and not name:
                 raise ValueError("Repository name is required, please use --name")
 
             if owner:
                 if all_flags:
-                    print(f"Getting all repositories from {owner}")
+                    logger.info("Getting all repositories from %s", owner)
                     results = client.get(f"/users/{owner}/repos")
                 if name:
                     if contributors:
-                        print(f"Getting repository contributors from {name}")
+                        logger.info("Getting repository contributors from %s", name)
                         results = client.get(f"/repos/{owner}/{name}/contributors")
                     elif owner and languages:
-                        print(
-                            f"Getting all languages associated with the repository {name}"
+                        logger.info(
+                            "Getting all languages associated with the repository %s",
+                            name,
                         )
                         results = client.get(f"/repos/{owner}/{name}/languages")
                     elif owner and tags:
-                        print(f"Getting all tags associated with the repository {name}")
+                        logger.info(
+                            "Getting all tags associated with the repository %s", name
+                        )
                         results = client.get(f"/repos/{owner}/{name}/tags")
                     elif owner and teams:
-                        print(
-                            f"Getting all teams associated with the repository {name}"
+                        logger.info(
+                            "Getting all teams associated with the repository %s", name
                         )
                         results = client.get(f"/repos/{owner}/{name}/teams")
                     else:
-                        print(f"Getting repository {name} from {owner}")
+                        logger.info("Getting repository %s from %s", name, owner)
                         results = client.get(f"/repos/{owner}/{name}")
-                else:
-                    print("Missing arguments for repo list. See --help for usage.")
             return results
