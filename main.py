@@ -22,4 +22,3 @@ if __name__ == "__main__":
     match getattr(args, "resource", None):
         case ("repo"):
             data = repository(base_url=base_url, bearer_token=bearer_token, args=args)
-            print(data)
