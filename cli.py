@@ -14,6 +14,14 @@ def create_parser():
         description="Arguments are needed to call functions", prog="gh-wrapper"
     )
 
+    # Global log level argument
+    parser.add_argument(
+        "--log-level",
+        choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+        default="INFO",
+        help="Set logging level (default: INFO)",
+    )
+
     subparsers = parser.add_subparsers(dest="resource", required=False)
 
     repo_parser = subparsers.add_parser("repo", help="Repository operations")
@@ -22,8 +30,8 @@ def create_parser():
     ## List Repository Arguments
     list_parser = repo_subparsers.add_parser("list", help="List repositories")
     list_parser.add_argument("--owner", help="Repository owner")
-    list_parser.add_argument("--name", help="Reposiroty name")
-    list_parser.add_argument("--org", action="store_true", help="Organization name")
+    list_parser.add_argument("--name", help="Repository name")
+    list_parser.add_argument("--org", help="Organization name")
     list_parser.add_argument("--all", action="store_true", help="Listing all records")
     list_parser.add_argument(
         "--contributors", action="store_true", help="Listing repository contributors"
